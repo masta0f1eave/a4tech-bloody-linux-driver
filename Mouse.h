@@ -51,3 +51,11 @@ private:
 
     bool isCompatibleDevice(libusb_device_descriptor &desc);
 };
+
+struct runData {
+  int device;
+  int backlight_level;
+  int8_t sens_slot;
+  uint16_t sens_x;
+  uint16_t sens_y;
+};
