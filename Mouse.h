@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include <map>
 #include <libusb.h>
+
+#include <map>
 
 static const int A4TECH_VID = 0x09da;
 
@@ -22,8 +23,13 @@ static const int BLOODY_R70_PID = 0xf643;
 static const int BLOODY_A7_PID = 0x7e36;
 static const int BLOODY_A9_PID = 0x1003;
 
-static const int COMPATIBLE_PIDS[] = {BLOODY_V5_PID, BLOODY_V7_PID, BLOODY_V8_PID, BLOODY_R7_PID, BLOODY_R8_1_PID, BLOODY_R3_PID, BLOODY_AL9_PID, BLOODY_R70_PID, BLOODY_A7_PID, BLOODY_A9_PID, BLOODY_RT5_PID, BLOODY_RT5_NEW_PID, BLOODY_A9_PID};
-static const size_t COMPATIBLE_PIDS_SIZE = sizeof(COMPATIBLE_PIDS)/sizeof(COMPATIBLE_PIDS[0]);
+static const int COMPATIBLE_PIDS[] = {
+    BLOODY_V5_PID,   BLOODY_V7_PID, BLOODY_V8_PID,  BLOODY_R7_PID,
+    BLOODY_R8_1_PID, BLOODY_R3_PID, BLOODY_AL9_PID, BLOODY_R70_PID,
+    BLOODY_A7_PID,   BLOODY_A9_PID, BLOODY_RT5_PID, BLOODY_RT5_NEW_PID,
+    BLOODY_A9_PID};
+static const size_t COMPATIBLE_PIDS_SIZE =
+    sizeof(COMPATIBLE_PIDS) / sizeof(COMPATIBLE_PIDS[0]);
 
 static const int A4TECH_MAGIC = 0x07;
 
@@ -31,27 +37,27 @@ static const int BACKLIGHT_OPCODE = 0x11;
 static const int BACKLIGHT_WRITE = 0x80;
 static const int BACKLIGHT_READ = 0x00;
 
-
 class Mouse {
-public:
-    ~Mouse();
-    void init();
-    void listDevices();
-    bool selectDevice(int address);
-    int setBackLightLevel(uint8_t level);
-    uint8_t getBackLightLevel();
-private:
-    std::map<int, libusb_device_handle*> devices;
-    libusb_device_handle* currentDevice = nullptr;
-    libusb_context* context = nullptr;
+ public:
+  ~Mouse();
+  void init();
+  void listDevices();
+  bool selectDevice(int address);
+  int setBackLightLevel(uint8_t level);
+  uint8_t getBackLightLevel();
 
-    int writeToMouse(uint8_t data[], size_t size);
-    int readFromMouse(uint8_t* request, size_t requestSize,
-                       uint8_t* response, size_t responseSize);
+ private:
+  std::map<int, libusb_device_handle *> devices;
+  libusb_device_handle *currentDevice = nullptr;
+  libusb_context *context = nullptr;
 
-    void discoverDevices();
+  int writeToMouse(uint8_t data[], size_t size);
+  int readFromMouse(uint8_t *request, size_t requestSize, uint8_t *response,
+                    size_t responseSize);
 
-    bool isCompatibleDevice(libusb_device_descriptor &desc);
+  void discoverDevices();
+
+  bool isCompatibleDevice(libusb_device_descriptor &desc);
 };
 
 struct runData {
