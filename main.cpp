@@ -37,6 +37,21 @@ int main(int argc, char *argv[]) {
         if (run.backlight_level < 0 || run.backlight_level > 3) help = true;
         break;
 
+      case 'S':
+        run.sens_slot = strtoul(optarg, 0l, 10);
+        if (run.sens_slot < 0 || run.sens_slot > 5) help = true;
+        break;
+
+      case 'x':
+        run.sens_x = strtoul(optarg, 0l, 10);
+        if (run.sens_x < 0) help = true;
+        break;
+
+      case 'y':
+        run.sens_y = strtoul(optarg, 0l, 10);
+        if (run.sens_y < 0) help = true;
+        break;
+
       default:
         help = true;
         break;
@@ -50,11 +65,14 @@ int main(int argc, char *argv[]) {
   if (!m.selectDevice(run.device)) exitA("No such device");
 
   if (get_backlight) {
-    std::cout << m.getBackLightLevel();
+    std::cout << static_cast<int>(m.getBackLightLevel());
     return 0;
   }
 
   if (run.backlight_level >= 0) m.setBackLightLevel(run.backlight_level);
+
+  if (run.sens_slot >= 0 && run.sens_x && run.sens_y)
+    m.setSensitivity(run.sens_slot, run.sens_x, run.sens_y);
 
   return 0;
 }
@@ -69,6 +87,10 @@ void usage() {
                "  -l        list devices\n"
                "  -d num    specify device address\n"
                "  -b        get backlight level\n"
-               "  -B lvl    set baclklight level [0-3]";
+               "  -B lvl    set baclklight level [0-3]\n"
+               "  -S slot   set sensitivity for a slot, followed by -x and -y "
+               "params\n"
+               "    -x num    x sensitivity\n"
+               "    -y num    y sensitivity";
   exit(1);
 }
