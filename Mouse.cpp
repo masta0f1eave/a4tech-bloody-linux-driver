@@ -336,7 +336,7 @@ Coords Mouse::convertCoords_3212(uint16_t x, uint16_t y) {
   if (static_cast<int16_t>(y) < 0x32) y = 0x32;
 
   return Coords{static_cast<uint8_t>((x + 0x13) / 0x26),
-                static_cast<uint8_t>((x + 0x13) / 0x26), 0};
+                static_cast<uint8_t>((y + 0x13) / 0x26), 0};
 }
 
 Coords Mouse::convertCoords_3305(uint16_t x, uint16_t y) {
