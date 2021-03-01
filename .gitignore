@@ -29,3 +29,12 @@ tags
 [._]*.un~
 
 build
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Target binary
+bloody
