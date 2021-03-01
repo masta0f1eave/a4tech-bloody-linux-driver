@@ -10,18 +10,25 @@
 
 static const int A4TECH_VID = 0x09da;
 
-static const int BLOODY_V5_PID = 0x172A;
-static const int BLOODY_V7_PID = 0xF613;
-static const int BLOODY_V8_PID = 0x11F5;
-static const int BLOODY_R7_PID = 0x1485;
-static const int BLOODY_R8_1_PID = 0x14ee;
-static const int BLOODY_R3_PID = 0x1a5a;
-static const int BLOODY_RT5_PID = 0x7f1b;
-static const int BLOODY_RT5_NEW_PID = 0x10d0;
-static const int BLOODY_AL9_PID = 0xf633;
-static const int BLOODY_R70_PID = 0xf643;
-static const int BLOODY_A7_PID = 0x7e36;
-static const int BLOODY_A9_PID = 0x1003;
+enum Pids {
+  BLOODY_V3_PID      = 0xF113,
+  BLOODY_V5_PID      = 0x172A,
+  BLOODY_V7_PID      = 0xF613,
+  BLOODY_V8_PID      = 0x11F5,
+  BLOODY_V8M_PID     = 0x1094,
+  BLOODY_R7_PID      = 0x1485,
+  BLOODY_R8_1_PID    = 0x14ee,
+  BLOODY_R8_PID      = 0x7c10,
+  BLOODY_ZL5A_PID    = 0x1311,
+  BLOODY_R3_PID      = 0x1a5a,
+  BLOODY_RT5_PID     = 0x7f1b,
+  BLOODY_RT5_NEW_PID = 0x10d0,
+  BLOODY_AL9_PID     = 0xf633,
+  BLOODY_R70_PID     = 0xf643,
+  BLOODY_A7_PID      = 0x7e36,
+  BLOODY_A9_PID      = 0x1003,
+  BLOODY_A90_PID     = 0xf6e3,
+};
 
 enum Sensors {
   PIXART_3050 = 3050,
@@ -50,10 +57,26 @@ enum Cpi
 };
 
 static const int COMPATIBLE_PIDS[] = {
-    BLOODY_V5_PID,   BLOODY_V7_PID, BLOODY_V8_PID,  BLOODY_R7_PID,
-    BLOODY_R8_1_PID, BLOODY_R3_PID, BLOODY_AL9_PID, BLOODY_R70_PID,
-    BLOODY_A7_PID,   BLOODY_A9_PID, BLOODY_RT5_PID, BLOODY_RT5_NEW_PID,
-    BLOODY_A9_PID};
+    BLOODY_V3_PID,
+    BLOODY_V5_PID,   
+    BLOODY_V7_PID, 
+    BLOODY_V8_PID,  
+    BLOODY_V8M_PID,  
+    BLOODY_R7_PID,
+    BLOODY_R8_PID,
+    BLOODY_ZL5A_PID,
+    BLOODY_R8_1_PID, 
+    BLOODY_R3_PID, 
+    BLOODY_AL9_PID, 
+    BLOODY_R70_PID,
+    BLOODY_A7_PID,   
+    BLOODY_A9_PID, 
+    BLOODY_RT5_PID, 
+    BLOODY_RT5_NEW_PID,
+    BLOODY_A9_PID,
+    BLOODY_A90_PID,
+};
+
 static const size_t COMPATIBLE_PIDS_SIZE =
     sizeof(COMPATIBLE_PIDS) / sizeof(COMPATIBLE_PIDS[0]);
 
