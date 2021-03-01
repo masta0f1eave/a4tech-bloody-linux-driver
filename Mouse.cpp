@@ -16,8 +16,8 @@ void Mouse::init() {
     return;
   }
 
-  //    libusb_set_debug(context, LIBUSB_LOG_LEVEL_DEBUG);
-  libusb_set_debug(context, LIBUSB_LOG_LEVEL_INFO);
+  // libusb_set_option(context, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
+  libusb_set_option(context, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_INFO);
 
   discoverDevices();
 }
