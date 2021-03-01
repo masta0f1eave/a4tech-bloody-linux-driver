@@ -280,36 +280,36 @@ Coords Mouse::convertCoords(uint16_t x, uint16_t y) {
   if (devInfo.maxCPI < y) y = devInfo.maxCPI;
 
   switch (devInfo.sensorType) {
-    case 0xBEA:
-      return convertCoords_BEA(x, y);
-    case 0xC8C:
-      return convertCoords_C8C(x, y);
-    case 0xCE9:
-      return convertCoords_CE9(x, y);
-    case 0xCFD:
-      return convertCoords_CFD(x, y);
-    case 0xCFE:
-      return convertCoords_CFE(x, y);
-    case 0xCFF:
-      return convertCoords_CFF(x, y);
-    case 0xD20:
-      return convertCoords_D20(x, y);
-    case 0xD3D:
-      return convertCoords_D3D(x, y);
-    case 0x25C1:
-      return convertCoords_251C(x, y);
-    case 0x2648:
-      return convertCoords_2648(x, y);
+    case PIXART_3050:
+      return convertCoords_3050(x, y);
+    case PIXART_3212:
+      return convertCoords_3212(x, y);
+    case PIXART_3305:
+      return convertCoords_3305(x, y);
+    case PIXART_3325:
+      return convertCoords_3325(x, y);
+    case PIXART_3326:
+      return convertCoords_3326(x, y);
+    case PIXART_3327:
+      return convertCoords_3327(x, y);
+    case PIXART_3360:
+      return convertCoords_3360(x, y);
+    case PIXART_3389:
+      return convertCoords_3389(x, y);
+    case PIXART_9500:
+      return convertCoords_9500(x, y);
+    case PIXART_9800:
+      return convertCoords_9800(x, y);
     default:
       break;
   }
   return Coords();
 }
 
-Coords Mouse::convertCoords_BEA(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_3050(uint16_t x, uint16_t y) {
   uint16_t cpiThreshold;
-  if (devInfo.maxCPI >= 0xFA0)
-    cpiThreshold = 0xF3C;
+  if (devInfo.maxCPI >= CPI_4000)
+    cpiThreshold = CPI_3900;
   else
     cpiThreshold = devInfo.maxCPI;
 
@@ -331,7 +331,7 @@ Coords Mouse::convertCoords_BEA(uint16_t x, uint16_t y) {
                 transformCoord(y, SUPP_MATRIX[0x10]), 0x88};
 }
 
-Coords Mouse::convertCoords_C8C(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_3212(uint16_t x, uint16_t y) {
   if (static_cast<int16_t>(x) < 0x32) x = 0x32;
   if (static_cast<int16_t>(y) < 0x32) y = 0x32;
 
@@ -339,7 +339,7 @@ Coords Mouse::convertCoords_C8C(uint16_t x, uint16_t y) {
                 static_cast<uint8_t>((x + 0x13) / 0x26), 0};
 }
 
-Coords Mouse::convertCoords_CE9(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_3305(uint16_t x, uint16_t y) {
   const uint16_t *mPtr;
 
   mPtr = SUPP_MATRIX;
@@ -358,7 +358,7 @@ Coords Mouse::convertCoords_CE9(uint16_t x, uint16_t y) {
                 transformCoord(y, SUPP_MATRIX[7]), 0x87};
 }
 
-Coords Mouse::convertCoords_CFD(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_3325(uint16_t x, uint16_t y) {
   if (static_cast<int>(x) < 0x32) x = 0x32;
   if (static_cast<int>(y) < 0x32) y = 0x32;
 
@@ -366,9 +366,9 @@ Coords Mouse::convertCoords_CFD(uint16_t x, uint16_t y) {
                 static_cast<uint8_t>((y + 0x16) / 0x2B - 1), 0};
 }
 
-Coords Mouse::convertCoords_CFE(uint16_t x, uint16_t y) {
-  if (x > 0x1388)
-    return Coords{transformCoord_2(x, 0x1388), transformCoord_2(y, 0x1388),
+Coords Mouse::convertCoords_3326(uint16_t x, uint16_t y) {
+  if (x > CPI_5000)
+    return Coords{transformCoord_2(x, CPI_5000), transformCoord_2(y, CPI_5000),
                   static_cast<uint8_t>(SUPP_MATRIX[0x57])};
   else if (x == y)
     return Coords{0x40, 0x40, static_cast<uint8_t>((x + 0x16) / 0x2B - 1)};
@@ -380,9 +380,9 @@ Coords Mouse::convertCoords_CFE(uint16_t x, uint16_t y) {
                   static_cast<uint8_t>(SUPP_MATRIX[x / 0x64 + 0x25])};
 }
 
-Coords Mouse::convertCoords_CFF(uint16_t x, uint16_t y) {
-  if (x > 0x1838)
-    return Coords{transformCoord_2(x, 0x1838), transformCoord_2(y, 0x1838),
+Coords Mouse::convertCoords_3327(uint16_t x, uint16_t y) {
+  if (x > CPI_6200)
+    return Coords{transformCoord_2(x, CPI_6200), transformCoord_2(y, CPI_6200),
                   static_cast<uint8_t>(SUPP_MATRIX[0x96])};
   else if (x == y)
     return Coords{0x40, 0x40, static_cast<uint8_t>((x + 0x16) / 0x2C - 1)};
@@ -394,7 +394,7 @@ Coords Mouse::convertCoords_CFF(uint16_t x, uint16_t y) {
                   static_cast<uint8_t>(SUPP_MATRIX[x / 0x64 + 0x58])};
 }
 
-Coords Mouse::convertCoords_D20(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_3360(uint16_t x, uint16_t y) {
   if (static_cast<int>(x) < 0x64) x = 0x64;
   if (static_cast<int>(y) < 0x64) y = 0x64;
 
@@ -402,7 +402,7 @@ Coords Mouse::convertCoords_D20(uint16_t x, uint16_t y) {
                 static_cast<uint8_t>((y + 0x32) / 0x64), 0};
 }
 
-Coords Mouse::convertCoords_D3D(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_3389(uint16_t x, uint16_t y) {
   // TODO: Fix 8 bit limit
   if (static_cast<int>(x) < 0x32) x = 0x32;
   if (static_cast<int>(y) < 0x32) y = 0x32;
@@ -411,7 +411,7 @@ Coords Mouse::convertCoords_D3D(uint16_t x, uint16_t y) {
                 static_cast<uint8_t>((y + 0x19) / 0x32), 0};
 }
 
-Coords Mouse::convertCoords_251C(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_9500(uint16_t x, uint16_t y) {
   // Probably not working because of resulting 8bit size of x and y.
   // Also there's no such sensor so far.
 
@@ -422,7 +422,7 @@ Coords Mouse::convertCoords_251C(uint16_t x, uint16_t y) {
                 static_cast<uint8_t>((y + 11.25) / 22.5), 0};
 }
 
-Coords Mouse::convertCoords_2648(uint16_t x, uint16_t y) {
+Coords Mouse::convertCoords_9800(uint16_t x, uint16_t y) {
   // Probably not working because of resulting 8bit size of x and y.
   // Also there's no such sensor so far.
 
@@ -443,203 +443,107 @@ void Mouse::fillDeviceInfo() {
   uint8_t minorId = devInfo.compositeId & 0xFF;
 
   switch (majorId) {
-    case 0x49C:
-      devInfo.sensorType = 3389;
-      devInfo.maxCPI = 16000;
-      break;
-
+    case 0x1E0:
+    case 0x1CC:
+    case 0x218:
+    case 0x23C:
+    case 0x2E0:
     case 0x480:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
+    case 0x490:
+    case 0x4A0:
+      devInfo.sensorType = PIXART_3325;
+      devInfo.maxCPI = CPI_4000;
       break;
 
     case 0x484:
       devInfo.sensorType = 0x2D0;
-      devInfo.maxCPI = 0x2EE0;
+      devInfo.maxCPI = CPI_12000;
       break;
 
-    case 0x490:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
+    case 0x14:
+    case 0x34:
+    case 0x38:
+    case 0x3C:
+    case 0x54:
+    case 0x5C:
+    case 0x60:
+    case 0x6C:
+    case 0xB4:
+    case 0xE0:
+    case 0xE8:
+    case 0x160:
+    case 0x164:
+    case 0x16C:
+    case 0x184:
+    case 0x1B8:
+    case 0x238:
+    case 0x298:
     case 0x2F0:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x2B8:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0x3E80;
-      break;
-
-    case 0x2D4:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2EE0;
-      break;
-
-    case 0x2E0:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x2B4:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0x3E80;
+    case 0x4B4:
+    case 0x4C4:
+      devInfo.sensorType = PIXART_3050;
+      devInfo.maxCPI = CPI_4000;
       break;
 
     case 0x2B0:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0x3E80;
+    case 0x2B4:
+    case 0x2B8:
+    case 0x49C:
+    case 0x4B8:
+    case 0x500:
+      devInfo.sensorType = PIXART_3389;
+      devInfo.maxCPI = CPI_16000;
       break;
 
-    case 0x238:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x23C:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x218:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
+    case 0x2D4:
+      devInfo.sensorType = PIXART_9800;
+      devInfo.maxCPI = CPI_12000;
       break;
 
     case 0x504:
     case 0x508:
-      devInfo.sensorType = 0xCFF;
-      devInfo.maxCPI = 0x2710;
-      break;
-
-    case 0x500:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0x3E80;
-      break;
-
-    case 0x4D8:
-      devInfo.sensorType = 0xCFE;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x4E0:
-      devInfo.sensorType = 0xCFE;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x4E4:
-      devInfo.sensorType = 0xCFE;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x4CC:
-      devInfo.sensorType = 0xCFF;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x4BC:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0xFA0;
+      devInfo.sensorType = PIXART_3327;
+      devInfo.maxCPI = CPI_10000;
       break;
 
     case 0x4C0:
-      devInfo.sensorType = 0xCFE;
-      devInfo.maxCPI = 0xFA0;
+    case 0x4D8:
+    case 0x4E0:
+    case 0x4E4:
+      devInfo.sensorType = PIXART_3326;
+      devInfo.maxCPI = CPI_4000;
       break;
 
-    case 0x4C4:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x4B8:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0x3E80;
-      break;
-
-    case 0x4A0:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
+    case 0x4CC:
+      devInfo.sensorType = PIXART_3327;
+      devInfo.maxCPI = CPI_4000;
       break;
 
     case 0x4A4:
-      devInfo.sensorType = 0xD3D;
-      devInfo.maxCPI = 0xFA0;
+    case 0x4BC:
+      devInfo.sensorType = PIXART_3389;
+      devInfo.maxCPI = CPI_4000;
       break;
 
-    case 0x1E0:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0xF4:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
-      break;
-
-    case 0xF0:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
-      break;
-
-    case 0x6C:
-    case 0xE8:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0xE4:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
-      break;
-
+    case 0x1C:
+    case 0x30:
+    case 0x64:
+    case 0x68:
+    case 0x88:
     case 0xA8:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
+    case 0xE4:
+    case 0xEC:
+    case 0xF0:
+    case 0xF4:
+      devInfo.sensorType = PIXART_9800;
+      devInfo.maxCPI = CPI_8200;
       break;
 
-    case 0xB4:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0xE0:
-    case 0x298:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x4B4:
-    case 0x164:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x184:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x1B8:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x1CC:
-      devInfo.sensorType = 0xCFD;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x16C:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x160:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
+    case 0x10:
+    case 0x78:
+    case 0x290:
+      devInfo.sensorType = PIXART_3305;
+      devInfo.maxCPI = CPI_3200;
       break;
 
     case 0x14C:
@@ -648,117 +552,33 @@ void Mouse::fillDeviceInfo() {
           break;
 
         case 0xC:
-          devInfo.sensorType = 0xCFD;
-          devInfo.maxCPI = 0xFA0;
-          break;
-
         case 0xD:
-          devInfo.sensorType = 0xCFD;
-          devInfo.maxCPI = 0xFA0;
-          break;
-
         case 0x14:
-          devInfo.sensorType = 0xCFD;
-          devInfo.maxCPI = 0xFA0;
+          devInfo.sensorType = PIXART_3325;
+          devInfo.maxCPI = CPI_4000;
           break;
 
         default:
-          devInfo.sensorType = 0xBEA;
-          devInfo.maxCPI = 0xFA0;
+          devInfo.sensorType = PIXART_3050;
+          devInfo.maxCPI = CPI_4000;
           break;
       }
-      break;
-
-    case 0x88:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
-      break;
-
-    case 0x54:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x5C:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x60:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0xEC:
-    case 0x64:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
-      break;
-
-    case 0x68:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
       break;
 
     case 0x40:
       switch (minorId) {
         case 0xB2:
-          devInfo.sensorType = 0xBEA;
-          devInfo.maxCPI = 0xFA0;
-          break;
-
         case 0xBC:
-          devInfo.sensorType = 0xBEA;
-          devInfo.maxCPI = 0xFA0;
-          break;
-
         case 0x31:
-          devInfo.sensorType = 0xBEA;
-          devInfo.maxCPI = 0xFA0;
+          devInfo.sensorType = PIXART_3050;
+          devInfo.maxCPI = CPI_4000;
           break;
 
         default:
-          devInfo.sensorType = 0xCE9;
-          devInfo.maxCPI = 0xC80;
+          devInfo.sensorType = PIXART_3305;
+          devInfo.maxCPI = CPI_3200;
           break;
       }
-      break;
-
-    case 0x34:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x38:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x3C:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x30:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
-      break;
-
-    case 0x10:
-    case 0x78:
-    case 0x290:
-      devInfo.sensorType = 0xCE9;
-      devInfo.maxCPI = 0xC80;
-      break;
-
-    case 0x14:
-      devInfo.sensorType = 0xBEA;
-      devInfo.maxCPI = 0xFA0;
-      break;
-
-    case 0x1C:
-      devInfo.sensorType = 0x2648;
-      devInfo.maxCPI = 0x2008;
       break;
 
     default:

@@ -23,6 +23,32 @@ static const int BLOODY_R70_PID = 0xf643;
 static const int BLOODY_A7_PID = 0x7e36;
 static const int BLOODY_A9_PID = 0x1003;
 
+enum Sensors {
+  PIXART_3050 = 3050,
+  PIXART_3212 = 3212,
+  PIXART_3305 = 3305,
+  PIXART_3325 = 3325,
+  PIXART_3326 = 3326,
+  PIXART_3327 = 3327,
+  PIXART_3360 = 3360,
+  PIXART_3389 = 3389,
+  PIXART_9500 = 9500,
+  PIXART_9800 = 9800,
+};
+
+enum Cpi
+{
+  CPI_3200 = 3200,
+  CPI_3900 = 3900,
+  CPI_4000 = 4000,
+  CPI_5000 = 5000,
+  CPI_6200 = 6200,
+  CPI_8200 = 8200,
+  CPI_10000 = 10000,
+  CPI_12000 = 12000,
+  CPI_16000 = 16000,
+};
+
 static const int COMPATIBLE_PIDS[] = {
     BLOODY_V5_PID,   BLOODY_V7_PID, BLOODY_V8_PID,  BLOODY_R7_PID,
     BLOODY_R8_1_PID, BLOODY_R3_PID, BLOODY_AL9_PID, BLOODY_R70_PID,
@@ -108,16 +134,16 @@ class Mouse {
 
   // convertCoords is a proxy function for different Sensors
   Coords convertCoords(uint16_t x, uint16_t y);
-  Coords convertCoords_BEA(uint16_t x, uint16_t y);
-  Coords convertCoords_C8C(uint16_t x, uint16_t y);
-  Coords convertCoords_CE9(uint16_t x, uint16_t y);
-  Coords convertCoords_CFD(uint16_t x, uint16_t y);
-  Coords convertCoords_CFE(uint16_t x, uint16_t y);
-  Coords convertCoords_CFF(uint16_t x, uint16_t y);
-  Coords convertCoords_D20(uint16_t x, uint16_t y);
-  Coords convertCoords_D3D(uint16_t x, uint16_t y);
-  Coords convertCoords_251C(uint16_t x, uint16_t y);
-  Coords convertCoords_2648(uint16_t x, uint16_t y);
+  Coords convertCoords_3050(uint16_t x, uint16_t y);
+  Coords convertCoords_3212(uint16_t x, uint16_t y);
+  Coords convertCoords_3305(uint16_t x, uint16_t y);
+  Coords convertCoords_3325(uint16_t x, uint16_t y);
+  Coords convertCoords_3326(uint16_t x, uint16_t y);
+  Coords convertCoords_3327(uint16_t x, uint16_t y);
+  Coords convertCoords_3360(uint16_t x, uint16_t y);
+  Coords convertCoords_3389(uint16_t x, uint16_t y);
+  Coords convertCoords_9500(uint16_t x, uint16_t y);
+  Coords convertCoords_9800(uint16_t x, uint16_t y);
 };
 
 struct runData {
