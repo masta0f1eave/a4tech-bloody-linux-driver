@@ -4,12 +4,18 @@
 
 #include "Mouse.h"
 
+#include "inih/ini.h"
+
 #include <iostream>
+
+#include <strings.h> // For strncasecmp
 
 using std::cout;
 using std::endl;
 
 void Mouse::init() {
+  loadDevicesDescriptions();
+
   int ret = libusb_init(&context);
   if (ret < 0) {
     cout << "Init Error " << ret << endl;
@@ -71,13 +77,30 @@ void Mouse::discoverDevices() {
   currentDevice = devices.begin()->second;
 }
 
+void Mouse::loadDevicesDescriptions() {
+  supportedDevices.clear();
+
+  auto handler = [](void* user, const char* section, const char* name, const char* value) -> int {
+    auto m = (Mouse*)user;
+
+    if (!strncasecmp(name, "pid", 4)) {
+      int pid = strtol(value, nullptr, 16);
+      //cout << pid << " " << section << endl;
+      m->supportedDevices.insert({pid, section});
+    }
+
+    return 1;
+  };
+
+  if (ini_parse(mice_filename, handler, this) < 0) {
+    cout << "Can't load mice data! Check that file exists" << std::endl;
+  }
+}
+
 bool Mouse::isCompatibleDevice(libusb_device_descriptor &desc) {
   if (desc.idVendor != A4TECH_VID) return false;
 
-  for (size_t i = 0; i < COMPATIBLE_PIDS_SIZE; ++i)
-    if (desc.idProduct == COMPATIBLE_PIDS[i]) return true;
-
-  return false;
+  return supportedDevices.contains(desc.idProduct);
 }
 
 Mouse::~Mouse() {
@@ -205,6 +228,7 @@ int Mouse::setSensitivity(uint8_t slot, uint16_t x, uint16_t y) {
 
 void Mouse::listDevices() {
   std::cout << "Available devices:" << endl;
+
   for (auto &devHand : devices) {
     libusb_device *device = libusb_get_device(devHand.second);
 
@@ -213,59 +237,11 @@ void Mouse::listDevices() {
 
     std::string name;
 
-    switch (desc.idProduct) {
-      case BLOODY_V3_PID:
-        name = "Bloody V3";
-        break;
-      case BLOODY_V5_PID:
-        name = "Bloody V5";
-        break;
-      case BLOODY_V7_PID:
-        name = "Bloody V7";
-        break;
-      case BLOODY_V8_PID:
-        name = "Bloody V8";
-        break;
-      case BLOODY_V8M_PID:
-        name = "Bloody V8M";
-        break;
-      case BLOODY_R7_PID:
-        name = "Bloody R7";
-        break;
-      case BLOODY_R8_1_PID:
-        name = "Bloody R8-1";
-        break;
-      case BLOODY_R8_PID:
-        name = "Bloody R8";
-        break;
-      case BLOODY_ZL5A_PID:
-        name = "Bloody ZL5A";
-        break;
-      case BLOODY_R3_PID:
-        name = "Bloody R3";
-        break;
-      case BLOODY_AL9_PID:
-        name = "Bloody AL9";
-        break;
-      case BLOODY_R70_PID:
-        name = "Bloody R70";
-        break;
-      case BLOODY_A7_PID:
-        name = "Bloody A7";
-        break;
-      case BLOODY_A9_PID:
-        name = "Bloody A9";
-        break;
-      case BLOODY_A90_PID:
-				name = "Bloody A90";
-				break;
-      case BLOODY_RT5_PID:
-        name = "Bloody RT5";
-        break;
-      case BLOODY_RT5_NEW_PID:
-        name = "Bloody RT5 (new dongle)";
-        break;
-      default:
+    auto search = supportedDevices.find(desc.idProduct);
+
+    if (search != supportedDevices.end()) {
+        name = search->second;
+    } else {
         name = "Unknown";
     }
 
