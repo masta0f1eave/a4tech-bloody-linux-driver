@@ -189,6 +189,8 @@ class Mouse {
   Coords convertCoords_3389(uint16_t x, uint16_t y);
   Coords convertCoords_9500(uint16_t x, uint16_t y);
   Coords convertCoords_9800(uint16_t x, uint16_t y);
+
+  Coords convertCoords_arith(float x, float y, float clamp, float bias, float scale, float offset = 0.0);
 };
 
 struct runData {

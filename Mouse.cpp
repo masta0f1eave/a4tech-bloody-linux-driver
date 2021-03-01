@@ -306,6 +306,14 @@ Coords Mouse::convertCoords(uint16_t x, uint16_t y) {
   return Coords();
 }
 
+Coords Mouse::convertCoords_arith(float x, float y, float clamp, float bias, float scale, float offset) {
+  x = std::max(x, clamp);
+  y = std::max(y, clamp);
+
+  return Coords{static_cast<uint8_t>((x + bias) / scale - offset),
+                static_cast<uint8_t>((y + bias) / scale - offset), 0};
+}
+
 Coords Mouse::convertCoords_3050(uint16_t x, uint16_t y) {
   uint16_t cpiThreshold;
 
@@ -318,7 +326,7 @@ Coords Mouse::convertCoords_3050(uint16_t x, uint16_t y) {
   if (cpiThreshold < y) y = cpiThreshold;
 
   for (uint8_t i = 1; i <= 8; ++i)
-    if (abs(x - CPI_VALUES_2[i]) <= 0x32 && abs(y - CPI_VALUES_2[i]) <= 0x32)
+    if (abs(x - CPI_VALUES_2[i]) <= 50.0 && abs(y - CPI_VALUES_2[i]) <= 50.0)
       return Coords{0x10, 0x10, static_cast<uint8_t>(i + 0x80)};
 
   for (uint8_t i = 1; i <= 8; ++i)
@@ -331,15 +339,10 @@ Coords Mouse::convertCoords_3050(uint16_t x, uint16_t y) {
 }
 
 Coords Mouse::convertCoords_3212(uint16_t x, uint16_t y) {
-  if (static_cast<int16_t>(x) < 0x32) x = 0x32;
-  if (static_cast<int16_t>(y) < 0x32) y = 0x32;
-
-  return Coords{static_cast<uint8_t>((x + 0x13) / 0x26),
-                static_cast<uint8_t>((y + 0x13) / 0x26), 0};
+  return convertCoords_arith(x, y, 50.0, 19.0, 38.0);
 }
 
 Coords Mouse::convertCoords_3305(uint16_t x, uint16_t y) {
-
   for (int i = 0; i < 8; ++i)
     if (CPI_VALUES_1[i] == x && CPI_VALUES_1[i] == y)
       return Coords{0x10, 0x10, static_cast<uint8_t>(i + 0x80)};
@@ -355,11 +358,7 @@ Coords Mouse::convertCoords_3305(uint16_t x, uint16_t y) {
 }
 
 Coords Mouse::convertCoords_3325(uint16_t x, uint16_t y) {
-  if (static_cast<int>(x) < 0x32) x = 0x32;
-  if (static_cast<int>(y) < 0x32) y = 0x32;
-
-  return Coords{static_cast<uint8_t>((x + 0x16) / 0x2B - 1),
-                static_cast<uint8_t>((y + 0x16) / 0x2B - 1), 0};
+  return convertCoords_arith(x, y, 50.0, 22.0, 43.0, 1.0);
 }
 
 Coords Mouse::convertCoords_3326(uint16_t x, uint16_t y) {
@@ -391,42 +390,19 @@ Coords Mouse::convertCoords_3327(uint16_t x, uint16_t y) {
 }
 
 Coords Mouse::convertCoords_3360(uint16_t x, uint16_t y) {
-  if (static_cast<int>(x) < 0x64) x = 0x64;
-  if (static_cast<int>(y) < 0x64) y = 0x64;
-
-  return Coords{static_cast<uint8_t>((x + 0x32) / 0x64),
-                static_cast<uint8_t>((y + 0x32) / 0x64), 0};
+  return convertCoords_arith(x, y, 100.0, 50.0, 100.0);
 }
 
 Coords Mouse::convertCoords_3389(uint16_t x, uint16_t y) {
-  // TODO: Fix 8 bit limit
-  if (static_cast<int>(x) < 0x32) x = 0x32;
-  if (static_cast<int>(y) < 0x32) y = 0x32;
-
-  return Coords{static_cast<uint8_t>((x + 0x19) / 0x32),
-                static_cast<uint8_t>((y + 0x19) / 0x32), 0};
+  return convertCoords_arith(x, y, 50.0, 25.0, 50.0);
 }
 
 Coords Mouse::convertCoords_9500(uint16_t x, uint16_t y) {
-  // Probably not working because of resulting 8bit size of x and y.
-  // Also there's no such sensor so far.
-
-  if (static_cast<int>(x) < 0x32) x = 0x32;
-  if (static_cast<int>(y) < 0x32) y = 0x32;
-
-  return Coords{static_cast<uint8_t>((x + 11.25) / 22.5),
-                static_cast<uint8_t>((y + 11.25) / 22.5), 0};
+  return convertCoords_arith(x, y, 50.0, 11.25, 22.5);
 }
 
 Coords Mouse::convertCoords_9800(uint16_t x, uint16_t y) {
-  // Probably not working because of resulting 8bit size of x and y.
-  // Also there's no such sensor so far.
-
-  if (static_cast<int>(x) < 0x32) x = 0x32;
-  if (static_cast<int>(y) < 0x32) y = 0x32;
-
-  return Coords{static_cast<uint8_t>((x + 0x19) / 0x32),
-                static_cast<uint8_t>((y + 0x19) / 0x32), 0};
+  return convertCoords_arith(x, y, 50.0, 25.0, 50.0);
 }
 
 void Mouse::fillDeviceInfo() {
