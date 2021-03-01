@@ -308,6 +308,7 @@ Coords Mouse::convertCoords(uint16_t x, uint16_t y) {
 
 Coords Mouse::convertCoords_3050(uint16_t x, uint16_t y) {
   uint16_t cpiThreshold;
+
   if (devInfo.maxCPI >= CPI_4000)
     cpiThreshold = CPI_3900;
   else
@@ -316,19 +317,17 @@ Coords Mouse::convertCoords_3050(uint16_t x, uint16_t y) {
   if (cpiThreshold < x) x = cpiThreshold;
   if (cpiThreshold < y) y = cpiThreshold;
 
-  const uint16_t *mPtr = SUPP_MATRIX + 9;
-  for (uint8_t i = 1; i <= 8; ++i, ++mPtr)
-    if (abs(x - *mPtr) <= 0x32 && abs(y - *mPtr) <= 0x32)
+  for (uint8_t i = 1; i <= 8; ++i)
+    if (abs(x - CPI_VALUES_2[i]) <= 0x32 && abs(y - CPI_VALUES_2[i]) <= 0x32)
       return Coords{0x10, 0x10, static_cast<uint8_t>(i + 0x80)};
 
-  mPtr = SUPP_MATRIX + 9;
-  for (uint8_t i = 1; i <= 8; ++i, ++mPtr)
-    if (*mPtr >= x && *mPtr >= y)
-      return Coords{transformCoord(x, *mPtr), transformCoord(y, *mPtr),
+  for (uint8_t i = 1; i <= 8; ++i)
+    if (CPI_VALUES_2[i] >= x && CPI_VALUES_2[i] >= y)
+      return Coords{transformCoord(x, CPI_VALUES_2[i]), transformCoord(y, CPI_VALUES_2[i]),
                     static_cast<uint8_t>(i + 0x80)};
 
-  return Coords{transformCoord(x, SUPP_MATRIX[0x10]),
-                transformCoord(y, SUPP_MATRIX[0x10]), 0x88};
+  return Coords{transformCoord(x, CPI_VALUES_2[8]),
+                transformCoord(y, CPI_VALUES_2[8]), 0x88};
 }
 
 Coords Mouse::convertCoords_3212(uint16_t x, uint16_t y) {
@@ -340,22 +339,19 @@ Coords Mouse::convertCoords_3212(uint16_t x, uint16_t y) {
 }
 
 Coords Mouse::convertCoords_3305(uint16_t x, uint16_t y) {
-  const uint16_t *mPtr;
 
-  mPtr = SUPP_MATRIX;
-  for (int i = 0; i < 8; ++i, ++mPtr)
-    if (*mPtr == x && *mPtr == y)
+  for (int i = 0; i < 8; ++i)
+    if (CPI_VALUES_1[i] == x && CPI_VALUES_1[i] == y)
       return Coords{0x10, 0x10, static_cast<uint8_t>(i + 0x80)};
 
-  mPtr = SUPP_MATRIX;
-  for (int i = 0; i < 8; ++i, ++mPtr)
-    if (*mPtr >= x && *mPtr >= y)
-      return Coords{transformCoord(x, SUPP_MATRIX[0]),
-                    transformCoord(y, SUPP_MATRIX[0]),
+  for (int i = 0; i < 8; ++i)
+    if (CPI_VALUES_1[i] >= x && CPI_VALUES_1[i] >= y)
+      return Coords{transformCoord(x, CPI_VALUES_1[0]),
+                    transformCoord(y, CPI_VALUES_1[0]),
                     static_cast<uint8_t>(i + 0x80)};
 
-  return Coords{transformCoord(x, SUPP_MATRIX[7]),
-                transformCoord(y, SUPP_MATRIX[7]), 0x87};
+  return Coords{transformCoord(x, CPI_VALUES_1[7]),
+                transformCoord(y, CPI_VALUES_1[7]), 0x87};
 }
 
 Coords Mouse::convertCoords_3325(uint16_t x, uint16_t y) {
@@ -369,29 +365,29 @@ Coords Mouse::convertCoords_3325(uint16_t x, uint16_t y) {
 Coords Mouse::convertCoords_3326(uint16_t x, uint16_t y) {
   if (x > CPI_5000)
     return Coords{transformCoord_2(x, CPI_5000), transformCoord_2(y, CPI_5000),
-                  static_cast<uint8_t>(SUPP_MATRIX[0x57])};
+                  static_cast<uint8_t>(SENSOR_POWER_1[CPI_5000 / 100])};
   else if (x == y)
     return Coords{0x40, 0x40, static_cast<uint8_t>((x + 0x16) / 0x2B - 1)};
   else if (y > x)
     return Coords{static_cast<uint8_t>((x << 6) / y + 0.5), 0x40,
-                  static_cast<uint8_t>(SUPP_MATRIX[y / 0x64 + 0x25])};
+                  static_cast<uint8_t>(SENSOR_POWER_1[y / 100])};
   else
     return Coords{0x40, static_cast<uint8_t>((y << 6) / x + 0.5),
-                  static_cast<uint8_t>(SUPP_MATRIX[x / 0x64 + 0x25])};
+                  static_cast<uint8_t>(SENSOR_POWER_1[x / 100])};
 }
 
 Coords Mouse::convertCoords_3327(uint16_t x, uint16_t y) {
   if (x > CPI_6200)
     return Coords{transformCoord_2(x, CPI_6200), transformCoord_2(y, CPI_6200),
-                  static_cast<uint8_t>(SUPP_MATRIX[0x96])};
+                  static_cast<uint8_t>(SENSOR_POWER_2[CPI_6200 / 100])};
   else if (x == y)
     return Coords{0x40, 0x40, static_cast<uint8_t>((x + 0x16) / 0x2C - 1)};
   else if (y > x)
     return Coords{static_cast<uint8_t>((x << 6) / y + 0.5), 0x40,
-                  static_cast<uint8_t>(SUPP_MATRIX[y / 0x64 + 0x58])};
+                  static_cast<uint8_t>(SENSOR_POWER_2[y / 100])};
   else
     return Coords{0x40, static_cast<uint8_t>((y << 6) / x + 0.5),
-                  static_cast<uint8_t>(SUPP_MATRIX[x / 0x64 + 0x58])};
+                  static_cast<uint8_t>(SENSOR_POWER_2[x / 100])};
 }
 
 Coords Mouse::convertCoords_3360(uint16_t x, uint16_t y) {
