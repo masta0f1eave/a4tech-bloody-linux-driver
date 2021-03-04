@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 static const int A4TECH_VID = 0x09da;
 
@@ -134,7 +135,7 @@ class Mouse {
  public:
   ~Mouse();
   void init();
-  void listDevices();
+  std::vector<std::pair<int, std::string>> listDevices();
   bool selectDevice(int address);
   int setBackLightLevel(uint8_t level);
   uint8_t getBackLightLevel();
@@ -177,12 +178,4 @@ class Mouse {
   Coords convertCoords_9800(uint16_t x, uint16_t y);
 
   Coords convertCoords_arith(float x, float y, float clamp, float bias, float scale, float offset = 0.0);
-};
-
-struct runData {
-  int device;
-  int backlight_level;
-  int8_t sens_slot;
-  uint16_t sens_x;
-  uint16_t sens_y;
 };

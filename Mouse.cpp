@@ -226,8 +226,8 @@ int Mouse::setSensitivity(uint8_t slot, uint16_t x, uint16_t y) {
   return 0;
 }
 
-void Mouse::listDevices() {
-  std::cout << "Available devices:" << endl;
+std::vector<std::pair<int, std::string>> Mouse::listDevices() {
+  auto list = std::vector<std::pair<int, std::string>>();
 
   for (auto &devHand : devices) {
     libusb_device *device = libusb_get_device(devHand.second);
@@ -245,8 +245,10 @@ void Mouse::listDevices() {
         name = "Unknown";
     }
 
-    std::cout << devHand.first << ":" << name << endl;
+    list.push_back({devHand.first, name});
   }
+
+  return list;
 }
 
 bool Mouse::selectDevice(int address) {
