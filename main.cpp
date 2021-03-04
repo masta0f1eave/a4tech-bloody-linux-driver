@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 
   m.init();
 
-  while ((opt = getopt(argc, argv, "hd:lbB:S:x:y:")) != -1) {
+  while ((opt = getopt(argc, argv, "hd:lbB:S:x:y:wW")) != -1) {
     switch (opt) {
       case 'd':
         run.device = strtoul(optarg, 0l, 10);
@@ -72,11 +72,21 @@ int main(int argc, char *argv[]) {
 
       case 'l':
         list_devices(&m);
-        exit(0);
+        return 0;
         break;
 
       case 'b':
         get_backlight = true;
+        break;
+
+      case 'w':
+        m.enableWheel(true);
+        return 0;
+        break;
+
+      case 'W':
+        m.enableWheel(false);
+        return 0;
         break;
 
       case 'B':
@@ -152,6 +162,8 @@ void usage() {
                "  -d num    specify device address\n"
                "  -b        get backlight level\n"
                "  -B lvl    set baclklight level [0-3]\n"
+               "  -W        disable mouse wheel\n"
+               "  -w        enable mouse wheel\n"
                "  -S slot   set sensitivity for a slot, followed by -x and -y "
                "params\n"
                "    -x num    x sensitivity\n"

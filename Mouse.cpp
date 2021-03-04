@@ -226,6 +226,25 @@ int Mouse::setSensitivity(uint8_t slot, uint16_t x, uint16_t y) {
   return 0;
 }
 
+int Mouse::enableWheel(bool enable) {
+  uint8_t data[72] = {
+      A4TECH_MAGIC,
+      WHEEL_OPCODE,
+      0x00,
+      0x00,
+      0x00,
+      0x00,
+      0x00,
+      0x00,
+      enable ? 0x00 : 0x01,
+      0x00,
+  };
+
+  if (writeToMouse(data, sizeof(data)) < 0) return -2;
+
+  return 0;
+}
+
 std::vector<std::pair<int, std::string>> Mouse::listDevices() {
   auto list = std::vector<std::pair<int, std::string>>();
 
