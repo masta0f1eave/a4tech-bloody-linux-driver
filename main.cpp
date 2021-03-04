@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 
   m.init();
 
-  while ((opt = getopt(argc, argv, "hd:lbB:S:x:y:wW")) != -1) {
+  while ((opt = getopt(argc, argv, "hd:lbB:S:x:y:wWr")) != -1) {
     switch (opt) {
       case 'd':
         run.device = strtoul(optarg, 0l, 10);
@@ -72,6 +72,11 @@ int main(int argc, char *argv[]) {
 
       case 'l':
         list_devices(&m);
+        return 0;
+        break;
+
+      case 'r':
+        m.rebootMouse();
         return 0;
         break;
 
@@ -158,6 +163,7 @@ void exitA(std::string const &str) {
 void usage() {
   cout << "Possible parameters:\n"
                "  -h        this help message\n"
+               "  -r        reset mouse\n"
                "  -l        list devices\n"
                "  -d num    specify device address\n"
                "  -b        get backlight level\n"

@@ -55,6 +55,8 @@ static const int DEVICE_REPORT_OPCODE_2 = 0x1F;
 
 static const int WHEEL_OPCODE = 0x16;
 
+static const int REBOOT_OPCODE = 0x00;
+
 static const int REQUEST_SIZE = 72;
 
 // Used in 3050
@@ -143,6 +145,7 @@ class Mouse {
   uint8_t getBackLightLevel();
   int setSensitivity(uint8_t slot, uint16_t x, uint16_t y);
   int enableWheel(bool enable);
+  int rebootMouse();
   int getDeviceId();
 
  private:
