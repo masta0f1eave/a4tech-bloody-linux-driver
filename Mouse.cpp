@@ -236,7 +236,7 @@ int Mouse::enableWheel(bool enable) {
       0x00,
       0x00,
       0x00,
-      enable ? 0x00 : 0x01,
+      static_cast<uint8_t>(enable ? 0x00 : 0x01),
       0x00,
   };
 
