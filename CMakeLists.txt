@@ -5,7 +5,7 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(LIBUSB1 REQUIRED libusb-1.0)
 include_directories(SYSTEM ${LIBUSB1_INCLUDE_DIRS})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 
 set(SOURCE_FILES
     main.cpp)

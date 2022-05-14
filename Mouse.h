@@ -124,9 +124,9 @@ static const uint16_t SUPP_MATRIX[] = {
 };*/
 
 struct DevInfo {
-  uint compositeId;
-  uint maxCPI;
-  uint sensorType;
+  unsigned int compositeId;
+  unsigned int maxCPI;
+  unsigned int sensorType;
 };
 
 struct Coords {
