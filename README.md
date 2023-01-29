@@ -17,6 +17,7 @@ sudo apt install libusb-1.0-0-dev cmake g++
 ```
 sudo pacman -S cmake pkg-config
 ```
+## Common part
 ```
 git clone --recursive https://github.com/Mr-Precise/a4tech-bloody-linux-driver
 cd a4tech-bloody-linux-driver
