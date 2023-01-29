@@ -19,7 +19,7 @@ sudo pacman -S cmake pkg-config
 ```
 ## Common part
 ```
-git clone --recursive https://github.com/Mr-Precise/a4tech-bloody-linux-driver
+git clone --recursive https://github.com/masta0f1eave/a4tech-bloody-linux-driver
 cd a4tech-bloody-linux-driver
 mkdir build && cp mice.ini build/ && cd build
 cmake -G "Unix Makefiles" ..
