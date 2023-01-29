@@ -13,6 +13,10 @@ dnf install gcc-c++ cmake libusbx-devel
 ```
 sudo apt install libusb-1.0-0-dev cmake g++
 ```
+## Arch Linux
+```
+sudo pacman -S cmake pkg-config
+```
 ```
 git clone --recursive https://github.com/Mr-Precise/a4tech-bloody-linux-driver
 cd a4tech-bloody-linux-driver
@@ -20,6 +24,7 @@ mkdir build && cp mice.ini build/ && cd build
 cmake -G "Unix Makefiles" ..
 make
 ```
+
 
 # Usage
 ```
