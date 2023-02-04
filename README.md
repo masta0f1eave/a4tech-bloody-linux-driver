@@ -26,6 +26,14 @@ cmake -G "Unix Makefiles" ..
 make
 ```
 
+## Add new bloody devices
+
+1. Get USB PID of device:
+```
+lsusb -d 09da: | cut -d ' ' -f6 | cut -d ':' -f2
+```
+2. Add that PID to mice.ini
+
 
 # Usage
 ```
